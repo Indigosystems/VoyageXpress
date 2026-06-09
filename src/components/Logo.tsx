@@ -29,13 +29,13 @@ export function Logo({
         <path d="M30 14 L56 14 L52 22 L33 22 Z" fill={markColor} />
         <path d="M33 29 L52 29 L49 37 L34 37 Z" fill={markColor} />
         <path d="M31 44 L50 44 L46 52 L31 52 Z" fill={markColor} />
-        {/* dashed centre lane on the V */}
+        {/* little lane dashes along the E bars — in the "Xpress" deep red */}
         <path
-          d="M16 20 L29 46"
-          stroke={variant === "light" ? "#1b2447" : "#ffffff"}
+          d="M34 18 H51 M35 33 H48 M33 48 H45"
+          stroke="#b3243a"
           strokeWidth="1.6"
           strokeLinecap="round"
-          strokeDasharray="2 4"
+          strokeDasharray="2 3"
         />
       </svg>
       <span className={`text-lg leading-none tracking-tight ${wordColor}`}>
