@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MeepMeepVan } from "./MeepMeepVan";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -72,8 +73,16 @@ export function MeepMeep() {
         aria-label={open ? "Close Meep Meep chat" : "Chat with Meep Meep"}
         className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-accent-600 px-4 py-3 text-sm font-semibold text-white shadow-lg ring-1 ring-black/5 transition hover:bg-accent-700"
       >
-        <span className="text-lg leading-none">{open ? "✕" : "💬"}</span>
-        {!open && <span className="hidden sm:inline">Chat to Meep&nbsp;Meep</span>}
+        {open ? (
+          <span className="text-lg leading-none">✕</span>
+        ) : (
+          <>
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+              <MeepMeepVan className="h-5 w-5" />
+            </span>
+            <span className="hidden sm:inline">Chat to Meep&nbsp;Meep</span>
+          </>
+        )}
       </button>
 
       {/* Panel */}
@@ -81,8 +90,8 @@ export function MeepMeep() {
         <div className="fixed bottom-20 right-5 z-50 flex h-[32rem] max-h-[calc(100vh-7rem)] w-[22rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
           {/* Header */}
           <div className="flex items-center gap-3 bg-brand-700 px-4 py-3 text-white">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-lg">
-              🐦
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+              <MeepMeepVan className="h-7 w-7" />
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold">Meep Meep</div>

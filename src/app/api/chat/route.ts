@@ -14,7 +14,9 @@ export const maxDuration = 30;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-const MODEL = "claude-opus-4-8";
+// Haiku 4.5 — fastest and cheapest; ideal for a FAQ + quoting bot.
+// Note: Haiku does not support the `effort` parameter (it would 400).
+const MODEL = "claude-haiku-4-5";
 
 const SYSTEM_PROMPT = `You are Meep Meep, the friendly delivery assistant for ${site.name} — a small, owner-operated local courier run by a husband-and-wife team. You help visitors on the website.
 
@@ -118,7 +120,6 @@ export async function POST(req: Request) {
         model: MODEL,
         max_tokens: 1024,
         thinking: { type: "disabled" },
-        output_config: { effort: "low" },
         system: SYSTEM_PROMPT,
         tools,
         messages: convo,
