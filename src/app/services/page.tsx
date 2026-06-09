@@ -1,32 +1,33 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Services — VoyageXpress",
   description:
-    "Express parcels, standard freight, ocean & air forwarding, and managed fleet logistics from VoyageXpress.",
+    "Same-day courier, scheduled delivery, regular business runs and small local moves — owner-operated, city and regional.",
 };
 
 const SERVICES = [
   {
-    title: "Express parcels",
-    desc: "Next-day and same-day delivery for time-critical packages across metropolitan Australia, with priority handling and signature on delivery.",
-    points: ["Next-day metro", "Live ETA tracking", "Proof of delivery"],
+    title: "Same-day courier",
+    desc: "Need something across town today? Book in the morning and we'll collect and deliver the same day, with a live tracking link so you always know where it is.",
+    points: ["Urgent point-to-point", "Live tracking", "Same-day"],
   },
   {
-    title: "Standard freight",
-    desc: "Cost-effective road and rail movement for pallets, cartons and bulky consignments, with flexible pickup windows.",
-    points: ["Pallet & LTL", "Road + rail network", "Liftgate options"],
+    title: "Scheduled delivery",
+    desc: "Pick a day and a time window that suits you. We turn up when we say we will and deliver on the dot — no all-day waiting around.",
+    points: ["Book a time", "Reliable windows", "City + regional"],
   },
   {
-    title: "Ocean & air freight",
-    desc: "International forwarding with customs clearance handled end to end — from a single carton to full container loads.",
-    points: ["FCL & LCL", "Customs brokerage", "Door-to-door"],
+    title: "Regular business runs",
+    desc: "Recurring pickups and drops for local businesses — daily, weekly, or whatever rhythm works. Same friendly faces every run, building a routine you can count on.",
+    points: ["Recurring runs", "Account billing", "The same drivers"],
   },
   {
-    title: "Managed fleet",
-    desc: "Dedicated vehicles and drivers for recurring routes, with a real-time ops dashboard and SLA reporting.",
-    points: ["Dedicated runs", "Driver app", "SLA dashboards"],
+    title: "Small local moves",
+    desc: "A few items, a marketplace buy, or a small office shuffle. If it fits in a van and two people can lift it, we'll move it carefully and get it there in one piece.",
+    points: ["Up to a van load", "Careful handling", "By arrangement"],
   },
 ];
 
@@ -34,10 +35,10 @@ export default function ServicesPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-16">
       <div className="max-w-2xl">
-        <h1 className="text-4xl font-bold tracking-tight">Services</h1>
+        <h1 className="text-4xl font-bold tracking-tight">What we do</h1>
         <p className="mt-3 text-lg text-slate-600">
-          One partner for every leg of the journey — pick a mode below or get an
-          instant quote.
+          An owner-operated courier covering {site.serviceArea}. {site.capacity}
+          {" "}— pick a service below or ask us for a quick quote.
         </p>
       </div>
 
@@ -61,17 +62,25 @@ export default function ServicesPage() {
       </div>
 
       <div className="mt-12 rounded-2xl bg-brand-600 px-8 py-10 text-white">
-        <h2 className="text-2xl font-bold">Not sure which service you need?</h2>
+        <h2 className="text-2xl font-bold">Not sure if we can help?</h2>
         <p className="mt-2 max-w-xl text-brand-100">
-          Tell us where it&rsquo;s going and what you&rsquo;re shipping — we&rsquo;ll
-          recommend the best mode and price.
+          Just ask. Tell us what you&rsquo;ve got and where it needs to go, and
+          we&rsquo;ll let you know straight away — and what it&rsquo;ll cost.
         </p>
-        <Link
-          href="/quote"
-          className="mt-5 inline-flex rounded-lg bg-white px-5 py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
-        >
-          Get an instant quote
-        </Link>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href="/quote"
+            className="inline-flex rounded-lg bg-white px-5 py-3 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
+          >
+            Get a quick quote
+          </Link>
+          <a
+            href={`tel:${site.phone.replace(/\s/g, "")}`}
+            className="inline-flex rounded-lg border border-white/30 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Call {site.phone}
+          </a>
+        </div>
       </div>
     </div>
   );

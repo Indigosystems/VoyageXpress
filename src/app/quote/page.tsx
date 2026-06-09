@@ -2,28 +2,35 @@
 
 import { useState } from "react";
 
-type Service = "express" | "standard" | "freight";
+type Service = "same_day" | "scheduled" | "regular";
+type Size = "satchel" | "small" | "large" | "van";
 
-const RATES: Record<Service, { base: number; perKg: number; label: string; days: string }> = {
-  express: { base: 18, perKg: 2.4, label: "Express", days: "1–2 business days" },
-  standard: { base: 9, perKg: 1.1, label: "Standard", days: "3–5 business days" },
-  freight: { base: 45, perKg: 0.6, label: "Freight", days: "5–8 business days" },
+const SERVICES: Record<Service, { base: number; label: string; eta: string }> = {
+  same_day: { base: 25, label: "Same-day courier", eta: "Today" },
+  scheduled: { base: 15, label: "Scheduled delivery", eta: "Your chosen day" },
+  regular: { base: 12, label: "Regular run (per drop)", eta: "On your run schedule" },
+};
+
+const SIZES: Record<Size, { surcharge: number; label: string }> = {
+  satchel: { surcharge: 0, label: "Satchel / documents" },
+  small: { surcharge: 5, label: "Small parcel (up to 5 kg)" },
+  large: { surcharge: 12, label: "Large box (up to 30 kg)" },
+  van: { surcharge: 40, label: "Up to a small van load" },
 };
 
 export default function QuotePage() {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-  const [weight, setWeight] = useState("");
-  const [service, setService] = useState<Service>("standard");
+  const [service, setService] = useState<Service>("same_day");
+  const [size, setSize] = useState<Size>("small");
   const [quote, setQuote] = useState<number | null>(null);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const kg = Math.max(0, parseFloat(weight) || 0);
-    const r = RATES[service];
-    // Simple, transparent demo pricing. Phase 2 replaces this with real rating.
-    const price = r.base + kg * r.perKg;
-    setQuote(Math.round(price * 100) / 100);
+    // Simple, transparent demo pricing: service base + size surcharge.
+    // Phase 2 replaces this with real distance-based rating.
+    const price = SERVICES[service].base + SIZES[size].surcharge;
+    setQuote(price);
   }
 
   const inputCls =
@@ -31,30 +38,31 @@ export default function QuotePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-14">
-      <h1 className="text-3xl font-bold tracking-tight">Get an instant quote</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Get a quick quote</h1>
       <p className="mt-2 text-slate-600">
-        Indicative pricing in seconds. Final rates confirmed at booking.
+        A rough price in seconds. We&rsquo;ll confirm the final cost when you
+        book — no surprises.
       </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-5">
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-medium text-slate-700">
-            From
+            Pickup suburb
             <input
               required
               value={origin}
               onChange={(e) => setOrigin(e.target.value)}
-              placeholder="Sydney, NSW"
+              placeholder="e.g. CBD"
               className={inputCls}
             />
           </label>
           <label className="block text-sm font-medium text-slate-700">
-            To
+            Drop-off suburb
             <input
               required
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
-              placeholder="Melbourne, VIC"
+              placeholder="e.g. Maple Town"
               className={inputCls}
             />
           </label>
@@ -62,17 +70,18 @@ export default function QuotePage() {
 
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-medium text-slate-700">
-            Weight (kg)
-            <input
-              required
-              type="number"
-              min="0"
-              step="0.1"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              placeholder="12.5"
+            What are we carrying?
+            <select
+              value={size}
+              onChange={(e) => setSize(e.target.value as Size)}
               className={inputCls}
-            />
+            >
+              {(Object.keys(SIZES) as Size[]).map((k) => (
+                <option key={k} value={k}>
+                  {SIZES[k].label}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="block text-sm font-medium text-slate-700">
             Service
@@ -81,9 +90,11 @@ export default function QuotePage() {
               onChange={(e) => setService(e.target.value as Service)}
               className={inputCls}
             >
-              <option value="express">Express (1–2 days)</option>
-              <option value="standard">Standard (3–5 days)</option>
-              <option value="freight">Freight (5–8 days)</option>
+              {(Object.keys(SERVICES) as Service[]).map((k) => (
+                <option key={k} value={k}>
+                  {SERVICES[k].label}
+                </option>
+              ))}
             </select>
           </label>
         </div>
@@ -92,21 +103,21 @@ export default function QuotePage() {
           type="submit"
           className="rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
         >
-          Calculate quote
+          Estimate my price
         </button>
       </form>
 
       {quote !== null && (
         <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-6">
           <div className="text-sm font-medium text-brand-700">
-            {RATES[service].label} · {origin || "Origin"} → {destination || "Destination"}
+            {SERVICES[service].label} · {origin || "Pickup"} → {destination || "Drop-off"}
           </div>
           <div className="mt-1 text-4xl font-bold text-brand-700">
-            ${quote.toFixed(2)}
+            from ${quote.toFixed(2)}
           </div>
           <div className="mt-1 text-sm text-slate-600">
-            Estimated transit: {RATES[service].days}. Indicative only — GST and
-            surcharges may apply.
+            {SERVICES[service].eta}. Indicative only — distance and timing may
+            adjust the final price, which we&rsquo;ll confirm before you book.
           </div>
         </div>
       )}

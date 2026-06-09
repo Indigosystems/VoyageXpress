@@ -16,10 +16,19 @@ export interface TrackingEvent {
   note?: string;
 }
 
+export type ServiceType = "same_day" | "scheduled" | "regular" | "move";
+
+export const SERVICE_LABELS: Record<ServiceType, string> = {
+  same_day: "Same-day courier",
+  scheduled: "Scheduled delivery",
+  regular: "Regular run",
+  move: "Small local move",
+};
+
 export interface Shipment {
   /** Public tracking number, e.g. "VX-4821-7390" */
   trackingNumber: string;
-  service: "express" | "standard" | "freight";
+  service: ServiceType;
   origin: string;
   destination: string;
   status: ShipmentStatus;

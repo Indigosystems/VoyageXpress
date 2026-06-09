@@ -30,7 +30,7 @@ export function SiteHeader() {
             href="/quote"
             className="rounded-lg bg-accent-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-700"
           >
-            Ship now
+            Book a pickup
           </Link>
         </div>
       </div>

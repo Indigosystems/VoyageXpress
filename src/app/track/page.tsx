@@ -1,6 +1,6 @@
 import { TrackForm } from "@/components/TrackForm";
 import { findShipment } from "@/data/shipments";
-import { STATUS_LABELS, type ShipmentStatus } from "@/lib/types";
+import { SERVICE_LABELS, STATUS_LABELS, type ShipmentStatus } from "@/lib/types";
 
 const STATUS_STYLE: Record<ShipmentStatus, string> = {
   booked: "bg-slate-100 text-slate-700",
@@ -77,7 +77,7 @@ export default async function TrackPage({
               </div>
               <div>
                 <dt className="text-slate-500">Service</dt>
-                <dd className="mt-0.5 font-medium capitalize">{shipment.service}</dd>
+                <dd className="mt-0.5 font-medium">{SERVICE_LABELS[shipment.service]}</dd>
               </div>
               <div>
                 <dt className="text-slate-500">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "./Logo";
+import { site } from "@/lib/site";
 
 export function SiteFooter() {
   return (
@@ -8,9 +9,9 @@ export function SiteFooter() {
         <div className="md:col-span-2">
           <Logo />
           <p className="mt-3 max-w-sm text-sm text-slate-500">
-            Freight, parcel and fleet logistics across Australia and the
-            Pacific. Real-time tracking, instant quotes, and an AI assistant
-            that actually knows where your shipment is.
+            An owner-operated local courier covering {site.serviceArea}.
+            Same-day runs, scheduled deliveries and small moves — handled by the
+            people who own the business.
           </p>
         </div>
         <div>
@@ -24,8 +25,16 @@ export function SiteFooter() {
         <div>
           <h3 className="text-sm font-semibold text-slate-900">Get in touch</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
-            <li>support@voyagexpress.example</li>
-            <li>1800 VOYAGE</li>
+            <li>
+              <a href={`mailto:${site.email}`} className="hover:text-brand-600">
+                {site.email}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-brand-600">
+                {site.phone}
+              </a>
+            </li>
           </ul>
         </div>
       </div>

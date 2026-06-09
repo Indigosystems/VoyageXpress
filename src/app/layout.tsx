@@ -4,9 +4,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "VoyageXpress — Logistics & Shipping, Delivered",
+  title: "VoyageXpress — Local Courier & Delivery",
   description:
-    "VoyageXpress moves your freight, parcels and fleet across Australia and beyond. Track shipments in real time, get instant quotes, and book pickups in minutes.",
+    "Owner-operated local courier covering the city and surrounding region. Same-day runs, scheduled deliveries and small moves — from a single satchel to a small van load, tracked live.",
 };
 
 export default function RootLayout({
