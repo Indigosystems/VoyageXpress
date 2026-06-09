@@ -25,18 +25,11 @@ export function Logo({
           d="M8 14 L28 52 L37 52 L20 14 Z"
           fill={markColor}
         />
-        {/* E formed from three angled bars sweeping off the road crest */}
-        <path d="M30 14 L56 14 L52 22 L33 22 Z" fill={markColor} />
-        <path d="M33 29 L52 29 L49 37 L34 37 Z" fill={markColor} />
-        <path d="M31 44 L50 44 L46 52 L31 52 Z" fill={markColor} />
-        {/* little lane dashes along the E bars — in the "Xpress" deep red */}
-        <path
-          d="M34 18 H51 M35 33 H48 M33 48 H45"
-          stroke="#b3243a"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeDasharray="2 3"
-        />
+        {/* E formed from three angled bars — in the "Xpress" deep red, so the
+            VE monogram echoes the two-tone Voyage / Xpress wordmark */}
+        <path d="M30 14 L56 14 L52 22 L33 22 Z" fill="#b3243a" />
+        <path d="M33 29 L52 29 L49 37 L34 37 Z" fill="#b3243a" />
+        <path d="M31 44 L50 44 L46 52 L31 52 Z" fill="#b3243a" />
       </svg>
       <span className={`text-lg leading-none tracking-tight ${wordColor}`}>
         Voyage<span className="text-accent-600">Xpress</span>
