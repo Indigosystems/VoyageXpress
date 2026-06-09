@@ -1,36 +1,25 @@
 "use client";
 
 import { useState } from "react";
-
-type Service = "same_day" | "scheduled" | "regular";
-type Size = "satchel" | "small" | "large" | "van";
-
-const SERVICES: Record<Service, { base: number; label: string; eta: string }> = {
-  same_day: { base: 25, label: "Same-day courier", eta: "Today" },
-  scheduled: { base: 15, label: "Scheduled delivery", eta: "Your chosen day" },
-  regular: { base: 12, label: "Regular run (per drop)", eta: "On your run schedule" },
-};
-
-const SIZES: Record<Size, { surcharge: number; label: string }> = {
-  satchel: { surcharge: 0, label: "Satchel / documents" },
-  small: { surcharge: 5, label: "Small parcel (up to 5 kg)" },
-  large: { surcharge: 12, label: "Large box (up to 30 kg)" },
-  van: { surcharge: 40, label: "Up to a small van load" },
-};
+import {
+  SERVICES,
+  SIZES,
+  calculateQuote,
+  type Service,
+  type Size,
+  type QuoteResult,
+} from "@/lib/pricing";
 
 export default function QuotePage() {
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [service, setService] = useState<Service>("same_day");
   const [size, setSize] = useState<Size>("small");
-  const [quote, setQuote] = useState<number | null>(null);
+  const [quote, setQuote] = useState<QuoteResult | null>(null);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // Simple, transparent demo pricing: service base + size surcharge.
-    // Phase 2 replaces this with real distance-based rating.
-    const price = SERVICES[service].base + SIZES[size].surcharge;
-    setQuote(price);
+    setQuote(calculateQuote(service, size));
   }
 
   const inputCls =
@@ -38,10 +27,12 @@ export default function QuotePage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-14">
-      <h1 className="text-3xl font-bold tracking-tight">Get a quick quote</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Pricing calculator</h1>
       <p className="mt-2 text-slate-600">
         A rough price in seconds. We&rsquo;ll confirm the final cost when you
-        book — no surprises.
+        book — no surprises. Prefer to just ask? Chat to{" "}
+        <span className="font-semibold text-accent-600">Meep&nbsp;Meep</span> in
+        the bottom corner.
       </p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-5">
@@ -107,17 +98,17 @@ export default function QuotePage() {
         </button>
       </form>
 
-      {quote !== null && (
+      {quote && (
         <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-6">
           <div className="text-sm font-medium text-brand-700">
-            {SERVICES[service].label} · {origin || "Pickup"} → {destination || "Drop-off"}
+            {quote.serviceLabel} · {origin || "Pickup"} → {destination || "Drop-off"}
           </div>
           <div className="mt-1 text-4xl font-bold text-brand-700">
-            from ${quote.toFixed(2)}
+            from ${quote.price.toFixed(2)}
           </div>
           <div className="mt-1 text-sm text-slate-600">
-            {SERVICES[service].eta}. Indicative only — distance and timing may
-            adjust the final price, which we&rsquo;ll confirm before you book.
+            {quote.eta}. Indicative only — distance and timing may adjust the
+            final price, which we&rsquo;ll confirm before you book.
           </div>
         </div>
       )}
